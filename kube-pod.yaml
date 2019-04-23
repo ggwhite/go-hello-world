@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld
+spec:
+  selector:
+    app: helloworld
+  ports:
+  - port: 3000
+    name: http
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-v1
+spec:
+  selector:
+    matchLabels:
+      app: helloworld
+  template:
+    metadata:
+      labels:
+        app: helloworld
+        version: v1
+    spec:
+      containers:
+      - name: myapp
+        image: ggwhite/go-hello-world
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
